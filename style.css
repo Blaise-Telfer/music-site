@@ -1,0 +1,670 @@
+/*global vars*/
+*{
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+body, html{
+	background: #333;
+	font-family: 'Oswald', sans-serif;
+}
+.container{
+	width: 90%;
+	margin: auto;
+}
+
+
+/*header*/
+header{
+	background: #eee;
+	height: 100px;
+	color: #333;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.logo{
+	margin: 0 0 0 20px;
+}
+.logo img{
+	height: 75px;
+}
+
+.menu{
+	display: flex;
+	justify-content: space-between;
+	align-items: center
+}
+header nav ul{
+	margin: 0;
+	padding: 0;
+	display: flex;
+}
+header nav ul li{
+	list-style: none;
+}
+header nav ul li a{
+	color: #333;
+	font-size: 20px;
+	font-weight: bold;
+	line-height: 100px;
+	padding: 0 20px;
+	text-decoration: none;
+	display: block;
+}
+header nav ul li a:hover,
+header nav ul li a.active{
+	background: #ff4747;
+	color: #eee;
+}
+.menu-toggle{
+	color: #000;
+	float: right;
+	line-height: 75px;
+	font-size: 24px;
+	cursor: pointer;
+	display: none;
+}
+
+.title{
+	border: #333 5px solid;
+	margin: 15px;
+	padding: 5px 10px;
+	font-family: 'Russo One', sans-serif;
+	font-size: 20px;
+}
+
+
+/*main display*/
+.display{
+	position: relative;
+	height: 650px;
+}
+
+#background {
+    position: absolute;
+    width: 100%;
+	height: 100%;
+    margin: auto;
+    top: 0;
+    left: 0;
+    filter: blur(3px);
+}
+
+/* container for music player */
+.box {
+    position: absolute;
+    height: 300pt;
+    width: 250pt;
+    margin: auto;
+    top: 0;
+    left: 0;
+    right: 0;
+	bottom: 0;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #000000;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #000000;
+}
+
+/* container for play, pause, previous track, next track, and progress bar  */
+.modal {
+    position: absolute;
+    height: 50%;
+    width: 100%;
+    background: -webkit-linear-gradient(45deg, rgb(40, 40, 40), rgb(133, 133, 133));
+    z-index: 4;
+    bottom: -17%;
+}
+
+/* album cover */
+#thumbnail {
+    position: absolute;
+    width: 100%;
+    top: -7%;
+    transition: 1s;
+    z-index: 3;
+}
+
+/* track artist */
+.song_artist {
+    position: absolute;
+    z-index: 4;
+    color: #2196f3;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: bold;
+    font-size: 20px;
+    bottom: 21%;
+    left: 28%;
+}
+
+/* track title */
+.song_title {
+    position: absolute;
+    z-index: 4;
+    color: #eee;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 15px;
+    bottom: 16%;
+    left: 28%;
+}
+
+/* style for play and pause images */
+#play_pause {
+    position: absolute;
+    height: 50px;
+    width: 50px;
+    filter: invert(1);
+    cursor: pointer;
+    bottom: 15%;
+    z-index: 4;
+    font-size: 53px;
+    left: 9%;
+}
+
+/* style for next and previous song images */
+#next-song, #previous-song {
+    position: absolute;
+    height: 30px;
+    width: 30px;
+    filter: invert(1);
+    cursor: pointer;
+    bottom: 13.5%;
+    font-size: 40px;
+    z-index: 4;
+}
+
+/* unique style for next song image */
+#next-song {
+    right: 10%;
+}
+
+/* unique style for previous song image */
+#previous-song {
+    right: 10.3%;
+    bottom: 21.5%;
+}
+
+/* style for current time of the track */
+.currentTime {
+    position: absolute;
+    height: 50px;
+    width: 50px;
+    cursor: pointer;
+    bottom: -1%;
+    left: 17%;
+    z-index: 4;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    color: #eee;
+    align-items: center;
+}
+
+/* style for the total length of the track */
+.durationTime {
+    position: absolute;
+    height: 50px;
+    width: 50px;
+    cursor: pointer;
+    bottom: -1%;
+    right: 11%;
+    z-index: 4;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    align-items: center;
+    color: #eee;
+}
+
+/* style for the progress bar */
+#progressBar {
+    -webkit-appearance: none;
+    appearance: none;
+    position: absolute;
+    z-index: 4;
+    height: 5px;
+    background: #000;
+    width: 160pt;
+    bottom: 5%;
+    border-radius: 30px;
+    left: 17%;
+}
+
+/* style for the progress bar's slider thumb */
+#progressBar::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    margin-top: -3px;
+    margin-left: 0px;
+    height: 10px;
+    width: 7px;
+    border: 0;
+    background: -webkit-linear-gradient(45deg,  rgb(213, 213, 213), rgb(193, 255, 6));
+    border-radius: 30px;
+    cursor: pointer;
+}
+
+/* style for the progress bar's runnable track */
+#progressBar::-webkit-slider-runnable-track {
+    -webkit-appearance: none;
+    appearance: none;
+    cursor: pointer;
+    max-height: 5px;
+    border-radius: 30px;
+}
+
+/* style to remove blue shade of the progress bar when clicked on/selected */
+#progressBar:focus {
+    outline: none;
+}
+
+
+/*new section*/
+.news{
+	background: #eee;
+	padding: 30px;
+	position: relative;
+}
+.news-title{
+	margin: 0 0 20px 0;
+	font-family: 'Russo One', sans-serif;
+}
+.news-title h2{
+	font-size: 40px;
+	margin: 0 0 20px 0;
+}
+.buttons{
+	display: flex;
+	margin: 0 0 0 15px;
+}
+.button{
+	cursor: pointer;
+	font-size: 25px;
+	color: #fff;
+	background: #000;
+	padding: 5px 10px;
+}
+.button:hover{
+	background: #2196f3;
+}
+
+/*customizing Slick slider*/
+.slider{
+	display: flex;
+	justify-content: space-between;
+	margin: 0 0 25px 0;
+}
+.tab{
+	position: relative;
+	height: 300px !important;
+	width: 500px ;
+	margin: 15px;
+	border: #333 solid 3px;
+}
+
+
+.tab1{
+	background: url("./images/trivium.jpg");
+	background-position: center;
+	background-size: cover;
+}
+.tab2{
+	background: url("./images/harris.jpg");
+	background-position: center;
+	background-size: cover;
+}
+.tab3{
+	background: url("./images/drake.jpg");
+	background-position: center;
+	background-size: cover;
+}
+.tab4{
+	background: url("./images/coachella2.jpg");
+	background-position: center;
+	background-size: cover;
+}
+.headline{
+	position: absolute;
+	background: rgba(0,0,0,0.4);
+	bottom: 0;
+	height: 25%;
+	width: 100%;
+	color: #fff;
+	padding: 0 15px;
+}
+.headline a{
+	color: #fff
+}
+
+
+/*gallery*/
+.events{
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	padding: 0 0 75px 0;
+}
+
+.gallery{
+	width: 40%;
+}
+.main-image{
+	height: 300px;
+	position: relative;
+}
+#triangle-left {
+	position: absolute;
+	top: 25%;
+	right: 0;
+	width: 20px;
+	height: 20px;
+	border-top: 15px solid transparent;
+	border-right: 30px solid #fff;
+	border-bottom: 15px solid transparent;
+}
+.main-image img{
+	width: 100%;
+	height: 100%;
+}
+.images{
+	height: 100px;
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+}
+.images img{
+	cursor: pointer;
+	height: 100%;
+	width: 100%;
+}
+/*fade-in gallery animation*/
+@keyframes fadeIn{
+	to{
+		opacityopacity: 1;
+	}
+}
+.fade-in{
+	opacity: 0;
+	animation: fadeIn 0.5s ease-in 1 forwards;
+}
+
+.details{
+	width: 20%;
+	background: #fff;
+	padding: 15px;
+	text-align: center;
+}
+.details h2{
+	font-size: 25px;
+}
+.details p{
+	font-family: 'Montserrat', sans-serif;
+	margin: 15px 0 0 0;
+}
+
+
+.squares{
+	display: flex;
+	flex-wrap: wrap;
+	width: 40%;
+}
+.square{
+	height: 200px;
+	width: 50%;
+	color: #fff;
+	position: relative;
+	font-family: 'Montserrat', sans-serif;
+}
+#square1{
+	background: url("./images/jayz.jpg");
+	background-position: center;
+	background-size: cover;
+}
+#square2{
+	background: #ff4747;
+}
+#square3{
+	background: #18b8ff;
+}
+#square4{
+	background: url("./images/corgan.jpg");
+	background-position: center;
+	background-size: cover;
+}
+.square p{
+	font-size: 30px;
+	position: absolute;
+	padding: 10px;
+}
+.square a{
+	padding: 10px;
+	color: #fff;
+	font-size: 15px;
+	text-decoration: none;
+	position: absolute;
+	bottom: 10px;
+}
+.square:nth-child(3) a,
+.square:nth-child(3) p{
+	right: 0;
+}
+
+
+	
+
+/*payment*/
+.payment{
+	background: #2196f3;
+	position: relative;
+}
+.paypal{
+	position: absolute;
+	top: -50px;
+	left: 50%;
+  margin-left: -50px;
+  right: 50%;
+  margin-right: -50px;
+}
+.paypal img{
+	height: 100px;
+	display: block;
+	margin: auto;
+}
+.cards{
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: center;
+	padding: 75px 0;
+}
+.card{
+	position: relative;
+	width: 300px;
+	height: 400px;
+	margin: 10px;
+	background: #fff;
+	padding: 15px;
+}
+.card p:before{
+	content: " \2714";
+}
+.card h1, .card h2, .card h3{
+	text-align: center;
+	line-height: 1.5;
+}
+.card button{
+	background: #0084cf;
+	color: #fff;
+	padding: 12px 30px;
+	width: 70%;
+	margin: 10px 15%;
+	border: none;
+	cursor: pointer;
+	font-size: 15px;
+	border-radius: 30px;
+	text-decoration: none;
+	text-transform: uppercase;
+}
+.card h1{
+	font-family: 'Russo One', sans-serif;
+}
+.card h2{
+	color: #0084cf;
+}
+.card:nth-child(2) button{
+	background: #00cfc6;
+}
+.card:nth-child(2) h2{
+	color: #00cfc6;
+}
+.card:nth-child(3) button{
+	background: #ffae00;
+}
+.card:nth-child(3) h2{
+	color: #ffae00;
+}
+.card p{
+	font-size: 18px;
+	text-align: center;
+	line-height: 2;
+}
+.card hr{
+	width: 50%;
+	margin: 10px auto;
+}
+
+
+/*download*/
+.download{
+	background: url("./images/background2.png");
+	background-repeat: no-repeat;
+	background-position-y: 100%;
+	background-size: cover;
+	height: 300px;
+	position: relative;
+}
+.stickers{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	
+}
+.stickers img{
+	height: 60px;
+	margin: 60px 20px;
+	cursor: pointer;
+}
+
+
+/*media queries*/
+@media(max-width: 900px){
+	.logo img{
+		height: 60px;
+	}
+	header nav ul li a{
+		padding: 0 10px;
+	}
+}
+
+@media(max-width: 850px){
+	.gallery{
+		width: 75%
+	}
+	.details{
+		width: 25%;
+	}
+	.squares{
+		width: 75%;
+		margin: 50px auto 0 auto;
+	}
+}
+
+@media(max-width: 768px){
+	header{
+		padding: 0 20px;
+	}
+	.logo{
+		margin: 0;
+	}
+	.menu-toggle{
+		display: block;
+	}
+	.test{
+		left: 0;
+	}
+	header nav{
+		position: absolute;
+		width: 100%;
+		background: #333;
+		top: 95px;
+		left: -100%;
+		transition: 0.5s;
+		z-index: 5;
+		margin: 0;
+	}
+	header nav ul{
+		display: block;
+		text-align: center;
+		width: 100%;
+	}
+	header nav ul li a{
+		border-bottom: 1px solid rgba(0,0,0,0.2);
+		color: #fff;
+		font-size: 15px;
+		line-height: 75px;
+	}
+	.news{
+		padding: 30px 10px;
+	}
+	.news-title{
+		margin: 30px 0;
+	}
+}
+
+@media(max-width: 600px){
+	.tab{
+		height: 270px !important;
+		margin: 15px;
+	}
+	.main-image{
+		height: 270px
+	}
+	#triangle-left{
+		display: none;
+	}
+	.gallery{
+		width: 100%;
+	}
+	.details{
+		width: 100%;
+	}
+}
+
+@media(max-width: 550px){
+	.squares{
+		width: 100%;
+	}
+	.download{
+		background-position: center;
+	}
+	.stickers{
+		flex-direction: column;
+		padding: 20px 0;
+	}
+	.stickers img{
+		margin: 10px 0;
+	}
+	.payment{
+		padding: 0 15px;
+	}
+}
+
+@media(max-width: 450px){
+	.logo img{
+		height: 45px;
+	}
+	.title{
+		font-size: 16px;
+	}
+	
+}
